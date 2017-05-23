@@ -89,12 +89,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\GLFW\include;C:\OpenGL\Simple OpenGL Image Library\src;C:\OpenGL\Glew\include;C:\OpenGL\glm;C:\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\OpenGL\GLFW\include;.\OpenGL\Simple OpenGL Image Library\src;.\OpenGL\Glew\include;.\OpenGL\glm;.\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL\GLFW\lib-vc2015;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;C:\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\OpenGL\GLFW\lib-vc2015;.\OpenGL\Glew\lib\Release\Win32;.\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;.\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;SOIL.lib;Assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -106,12 +106,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\GLFW\include;C:\OpenGL\Simple OpenGL Image Library\src;C:\OpenGL\Glew\include;C:\OpenGL\glm;C:\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\OpenGL\GLFW\include;.\OpenGL\Simple OpenGL Image Library\src;.\OpenGL\Glew\include;.\OpenGL\glm;.\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL\GLFW\lib-vc2015;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;C:\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\OpenGL\GLFW\lib-vc2015;.\OpenGL\Glew\lib\Release\Win32;.\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;.\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;SOIL.lib;Assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -125,14 +125,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\GLFW\include;C:\OpenGL\Simple OpenGL Image Library\src;C:\OpenGL\Glew\include;C:\OpenGL\glm;C:\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\OpenGL\GLFW\include;.\OpenGL\Simple OpenGL Image Library\src;.\OpenGL\Glew\include;.\OpenGL\glm;.\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL\GLFW\lib-vc2015;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;C:\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\OpenGL\GLFW\lib-vc2015;.\OpenGL\Glew\lib\Release\Win32;.\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;.\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;SOIL.lib;Assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -146,14 +146,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\GLFW\include;C:\OpenGL\Simple OpenGL Image Library\src;C:\OpenGL\Glew\include;C:\OpenGL\glm;C:\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\OpenGL\GLFW\include;.\OpenGL\Simple OpenGL Image Library\src;.\OpenGL\Glew\include;.\OpenGL\glm;.\OpenGL\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL\GLFW\lib-vc2015;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;C:\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\OpenGL\GLFW\lib-vc2015;.\OpenGL\Glew\lib\Release\Win32;.\OpenGL\Simple OpenGL Image Library\projects\VC9\Debug;.\OpenGL\assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;SOIL.lib;Assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
