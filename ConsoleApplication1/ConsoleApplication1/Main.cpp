@@ -102,6 +102,9 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
+		//Camera Position for the lights
+		glUniform3f(glGetUniformLocation(shader.Program, "cameraFront"), camera.Front.x, camera.Front.y, camera.Front.z);
+
 		// Draw the loaded model
 		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
