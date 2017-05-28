@@ -74,10 +74,82 @@ int main()
 	Shader shader("ShaderVertex.vs", "ShaderFragment.frag");
 
 	// Load models
-	Model ourModel("./spider/spider.obj");
+	Model ourModel("./Wall/Wall.obj");
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
+	//crear textura en opengl
+	GLuint texture, texture2;
+	glGenTextures(1, &texture);
+	glGenTextures(1, &texture2);
+
+	//enllaça la textures 
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//Cargar imagen
+
+	int width, height, width2, height2;
+	unsigned char* image;
+	unsigned char* image2;
+
+	image = SOIL_load_image("./Wall/normal.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	image2 = SOIL_load_image("./Wall/dep.png", &width2, &height2, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width2, height2, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
+	SOIL_free_image_data(image2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	
+
+	// positions
+	glm::vec3 pos1(-1.0, 1.0, 0.0);
+	glm::vec3 pos2(-1.0, -1.0, 0.0);
+	glm::vec3 pos3(1.0, -1.0, 0.0);
+	glm::vec3 pos4(1.0, 1.0, 0.0);
+	// texture coordinates
+	glm::vec2 uv1(0.0, 1.0);
+	glm::vec2 uv2(0.0, 0.0);
+	glm::vec2 uv3(1.0, 0.0);
+	glm::vec2 uv4(1.0, 1.0);
+
+	glm::vec3 tangent1, bitangent1;
+	// normal vector
+	glm::vec3 nm(0.0, 0.0, 1.0);
+
+	glm::vec3 edge1 = pos2 - pos1;
+	glm::vec3 edge2 = pos3 - pos1;
+	glm::vec2 deltaUV1 = uv2 - uv1;
+	glm::vec2 deltaUV2 = uv3 - uv1;
+
+	GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+	tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+	tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+	tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+	tangent1 = glm::normalize(tangent1);
+
+	bitangent1.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+	bitangent1.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+	bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+	bitangent1 = glm::normalize(bitangent1);
+
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -104,6 +176,22 @@ int main()
 
 		//Camera Position for the lights
 		glUniform3f(glGetUniformLocation(shader.Program, "cameraFront"), camera.Front.x, camera.Front.y, camera.Front.z);
+
+		glUniform3f(glGetUniformLocation(shader.Program, "tangent"), tangent1.x, tangent1.y, tangent1.z);
+		glUniform3f(glGetUniformLocation(shader.Program, "bitangent"), bitangent1.x, bitangent1.y, bitangent1.z);
+		
+		// And finally bind the texture
+		//Passem textures
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glUniform1i(glGetUniformLocation(shader.Program, "normalMap"), 1);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
+		glUniform1i(glGetUniformLocation(shader.Program, "depthMap"),0);
+
+		
+
 
 		// Draw the loaded model
 		glm::mat4 model;
