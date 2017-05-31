@@ -18,33 +18,26 @@ public:
 		// 1. Retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;
 		std::string fragmentCode;
-		std::string normalCode;
 		std::ifstream vShaderFile;
 		std::ifstream fShaderFile;
-		std::ifstream nShaderFile;
 		// ensures ifstream objects can throw exceptions:
 		vShaderFile.exceptions(std::ifstream::badbit);
 		fShaderFile.exceptions(std::ifstream::badbit);
-		nShaderFile.exceptions(std::ifstream::badbit);
 		try
 		{
 			// Open files
 			vShaderFile.open(vertexPath);
 			fShaderFile.open(fragmentPath);
-			nShaderFile.open("./ShaderNormal.norm");
 			std::stringstream vShaderStream, fShaderStream,nShaderStream;
 			// Read file's buffer contents into streams
 			vShaderStream << vShaderFile.rdbuf();
 			fShaderStream << fShaderFile.rdbuf();
-			nShaderStream << nShaderFile.rdbuf();
 			// close file handlers
 			vShaderFile.close();
 			fShaderFile.close();
-			nShaderFile.close();
 			// Convert stream into string
 			vertexCode = vShaderStream.str();
 			fragmentCode = fShaderStream.str();
-			normalCode = nShaderStream.str();
 		}
 		catch (std::ifstream::failure e)
 		{
@@ -52,9 +45,8 @@ public:
 		}
 		const GLchar* vShaderCode = vertexCode.c_str();
 		const GLchar * fShaderCode = fragmentCode.c_str();
-		const GLchar* nShaderCode = normalCode.c_str();
 		// 2. Compile shaders
-		GLuint vertex, fragment,normal;
+		GLuint vertex, fragment;
 		GLint success;
 		GLchar infoLog[512];
 		// Vertex Shader
@@ -79,24 +71,10 @@ public:
 			glGetShaderInfoLog(fragment, 512, NULL, infoLog);
 			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 		}
-
-		// Normal Shader
-		normal = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(normal, 1, &nShaderCode, NULL);
-		glCompileShader(normal);
-		// Print compile errors if any
-		glGetShaderiv(normal, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			glGetShaderInfoLog(normal, 512, NULL, infoLog);
-			std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-		}
-
 		// Shader Program
 		this->Program = glCreateProgram();
 		glAttachShader(this->Program, vertex);
 		glAttachShader(this->Program, fragment);
-		glAttachShader(this->Program, normal);
 		glLinkProgram(this->Program);
 		// Print linking errors if any
 		glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
@@ -108,7 +86,6 @@ public:
 		// Delete the shaders as they're linked into our program now and no longer necessery
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
-		glDeleteShader(normal);
 
 	}
 	// Uses the current shader
