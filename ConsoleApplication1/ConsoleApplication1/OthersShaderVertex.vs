@@ -3,8 +3,8 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 texCoords;
 
-in vec3 tangent;
-in vec3 bitangent;
+uniform vec3 tangent;
+uniform vec3 bitangent;
 
 out vec2 TexCoords;
 out vec3 normalText;
@@ -13,8 +13,6 @@ out vec3 positionPoint;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-
-in vec3 cameraFront;
 
 void main()
 {

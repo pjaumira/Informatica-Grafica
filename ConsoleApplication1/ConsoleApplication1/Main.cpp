@@ -210,7 +210,7 @@ int main()
 
 	// Load models
 	Model ourModel("./Spider/spider.obj");
-
+	Model wall("./Habitacio/habitacio.obj");
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
@@ -253,7 +253,7 @@ int main()
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	// Posicio llum
-	glm::vec3 lightPos(0.5f, 1.0f, 0.3f);
+	glm::vec3 lightPos(0.0f, 100.0f, -10.0f);
 	// Textures, normlas i heightmaps
 	GLuint diffuseMap = LoadTexture("Brick.jpg", parallax, "diffuseMap", 0);
 	GLuint normalMap = LoadTexture("Normal.png", parallax, "normalMap", 1);
@@ -302,6 +302,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		//Camera Position for the lights
+		glUniform3f(glGetUniformLocation(shader.Program, "cameraPosition"), camera.Position.x, camera.Position.y, camera.Position.z);
 		glUniform3f(glGetUniformLocation(shader.Program, "cameraFront"), camera.Front.x, camera.Front.y, camera.Front.z);
 		
 		// And finally bind the texture
@@ -320,10 +321,15 @@ int main()
 
 		// Draw the loaded model
 		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+		model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		ourModel.Draw(shader);
+		glm::mat4 model2;
+		model = glm::translate(model2, glm::vec3(0.0f, -7.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		wall.Draw(shader);
 
 		//Parallax Plane
 		parallax.Use();
@@ -332,10 +338,10 @@ int main()
 		view = camera.GetViewMatrix();
 		glUniformMatrix4fv(glGetUniformLocation(parallax.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(parallax.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		glUniform3f(glGetUniformLocation(parallax.Program, "cameraFront"), camera.Front.x, camera.Front.y, camera.Front.z);
+		glUniform3f(glGetUniformLocation(parallax.Program, "cameraPosition"), camera.Position.x, camera.Position.y, camera.Position.z);
 
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -100.0f));
-		model = glm::scale(model, glm::vec3(100.0f, 100.0f, 100.0f));
+		model = glm::translate(model2, glm::vec3(0.0f, 15.0f, -30.0f));
+		model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
 		glUniformMatrix4fv(glGetUniformLocation(parallax.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
 		glUniform3fv(glGetUniformLocation(parallax.Program, "lightPos"), 1, &lightPos[0]);
@@ -451,7 +457,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	camera.ProcessMouseScroll(yoffset);
+	//camera.ProcessMouseScroll(yoffset);
 }
 
 #pragma endregion
