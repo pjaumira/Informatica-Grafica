@@ -31,7 +31,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
 
 // Camera
-Camera camera(glm::vec3(-15.0f, 7.0f, 5.0f));
+Camera camera(glm::vec3(-15.0f, 40.0f, 5.0f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -209,8 +209,9 @@ int main()
 	Shader shader("OthersShaderVertex.vs", "OthersShaderFragment.frag");
 
 	// Load models
-	Model ourModel("./Spider/spider.obj");
 	Model wall("./Habitacio/habitacio.obj");
+	Model table("./Habitacio/Taula.obj");
+	Model chair("./Habitacio/cadira.obj");
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
@@ -320,12 +321,39 @@ int main()
 		glUniform1i(glGetUniformLocation(shader.Program, "cone"), cone);
 
 		// Draw the loaded model
-		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
+		glm::mat4 model, model2;
+		
+		//Mesa
+		model = glm::translate(model2, glm::vec3(0.0f, -5.5f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		ourModel.Draw(shader);
-		glm::mat4 model2;
+		table.Draw(shader);
+		//4 sillas (son el mismo objeto pintado 4 veces en posiciones diferentes
+		model = glm::translate(model2, glm::vec3(-5.0f, 5.0f, -10.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		chair.Draw(shader);
+
+		model = glm::translate(model2, glm::vec3(15.0f, 5.0f, -10.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		chair.Draw(shader);
+
+		model = glm::translate(model2, glm::vec3(-15.0f, 5.0f, 12.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		chair.Draw(shader);
+
+		model = glm::translate(model2, glm::vec3(5.0f, 5.0f, 12.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		chair.Draw(shader);
+
+		//Paredes de la habitacion
 		model = glm::translate(model2, glm::vec3(0.0f, -7.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));

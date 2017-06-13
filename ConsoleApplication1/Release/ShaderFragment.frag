@@ -17,13 +17,45 @@ uniform bool active;
 uniform float height_scale;
 
 in vec3 positionPoint;
-in vec3 cameraFront;
+uniform vec3 cameraPosition;
 in vec3 n;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
 { 
     float height =  texture(depthMap, texCoords).r;     
     return texCoords - viewDir.xy / viewDir.z * (height * height_scale);            
+}
+float Ia=0.5;
+float Ka=0.5;
+float Il=1.0;
+float Kd=0.3;
+float Ke=0.2;
+
+//Point of Light
+vec3 point = vec3(0.0,100.0,0.0);
+
+//L vector
+vec3 l=normalize(point-positionPoint);
+
+//V vector
+vec3 v=normalize(cameraPosition-positionPoint);
+
+vec4 Ambient(vec2 tCoord)
+{
+	return vec4(texture(diffuseMap, tCoord))*Ia*Ka;
+}
+vec4 Diffuse(vec2 tCoord)
+{
+	return vec4(texture(diffuseMap, tCoord))*Il*Kd*max(dot(l,n),0.0);
+}
+
+vec4 Specular(vec2 tCoord)
+{
+	vec3 h=(l+v)/2.0;
+	vec3 r=2*dot(l,n)*n-l;
+	float esp= max(dot(r,v),0);//*n
+	
+	return vec4(texture(diffuseMap, tCoord))*Il*Ke*esp;
 }
 
 void main()
@@ -35,7 +67,8 @@ void main()
 	{
         texCoords = ParallaxMapping(fs_in.TexCoords,  viewDir);
 	}
-    	
+	FragColor=Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords);
+    /*	
 	//Ambient Specular, Difuse and Shinness
 	float a=0.5;
 	float s=0.1;
@@ -58,9 +91,9 @@ void main()
 	vec3 r= (2*dot(l,n)*n)-l;
 	
 	//V vector
-	vec3 v=-cameraFront;
+	vec3 v=cameraFront-fs_in.FragPos;
 	
 	float light= a+((d*dot(n,l))+(s*pow(dot(v,r),q)))*(omega/4*3.1415*(distance*distance));
 
-	FragColor = vec4(texture(diffuseMap, texCoords))* light;
+	FragColor = vec4(texture(diffuseMap, texCoords));//* light;*/
 }

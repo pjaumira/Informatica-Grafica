@@ -19,5 +19,5 @@ void main()
     gl_Position = projection * view * model * vec4(position, 1.0);
     TexCoords = texCoords;
 	normalText= normal;
-	positionPoint=position;
+	positionPoint=(model*vec4(position,1.0)).xyz;
 }
