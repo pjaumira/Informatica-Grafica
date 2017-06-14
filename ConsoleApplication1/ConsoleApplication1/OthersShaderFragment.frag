@@ -16,7 +16,7 @@ uniform bool ambient;
 uniform bool pointLight;
 uniform bool cone;
 
-float Ia=0.2;
+float Ia=0.3;
 float Ka=0.5;
 float Il=0.7;
 float Kd=0.3;
@@ -35,12 +35,10 @@ vec3 v=normalize(cameraPosition-positionPoint);
 
 vec4 Ambient()
 {
-	//return vec4(1.0)*Ia*Ka;
 	return vec4(texture(texture_diffuse1, TexCoords))*Ia*Ka;
 }
 vec4 Diffuse()
 {
-	//return vec4(1.0)*Il*Kd*max(dot(l,normalText),0.0);
 	return vec4(texture(texture_diffuse1, TexCoords))*Il*Kd*max(dot(l,normalText),0.0);
 }
 
@@ -49,7 +47,6 @@ vec4 Specular()
 	vec3 h=(l+v)/2.0;
 	vec3 r=2*dot(l,normalText)*normalText-l;
 	float esp= max(dot(r,v),0);
-	//return vec4(1.0)*Il*Ke*esp;
 	return vec4(texture(texture_diffuse1, TexCoords))*Il*Ke*esp;
 }
 void main()
@@ -66,13 +63,13 @@ void main()
 	vec3 focDir=vec3(0.0,-1.0,0.0);
 	l=normalize(point-positionPoint);
 	Il=1.0;
-	Ka=0.3;
 	float rMin=10.0;
 	float rMax=50.0;
 	float theta=dot(l,normalize(-focDir));
 	float epsilon= rMin-rMax;
 	float inte= clamp((theta-rMax)/epsilon,0,1);
 	vec4 f=(Ambient()+Diffuse()+Specular())*fatt*inte;
+	Ka=0.3;
 	if(ambient)
 	{
 		color=dir;

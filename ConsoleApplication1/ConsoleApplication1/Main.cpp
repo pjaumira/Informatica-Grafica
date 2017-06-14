@@ -212,6 +212,7 @@ int main()
 	Model wall("./Habitacio/habitacio.obj");
 	Model table("./Habitacio/Taula.obj");
 	Model chair("./Habitacio/cadira.obj");
+
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
