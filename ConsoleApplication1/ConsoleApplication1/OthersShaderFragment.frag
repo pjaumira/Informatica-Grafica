@@ -12,10 +12,6 @@ uniform sampler2D texture_diffuse1;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 
-uniform bool ambient;
-uniform bool pointLight;
-uniform bool cone;
-
 float Ia=0.3;
 float Ka=0.5;
 float Il=0.7;
@@ -54,6 +50,7 @@ void main()
 	vec4 dir=Ambient()+Diffuse()+Specular();
 		
 	//PointLight
+	Il=1.0;
 	l=normalize(point-positionPoint);
 	float d=length(l);
 	float fatt = 1.0/(1.0+0.7*d+1.8*(d*d));
@@ -62,32 +59,22 @@ void main()
 	//Focus
 	vec3 focDir=vec3(0.0,-1.0,0.0);
 	l=normalize(point-positionPoint);
-	Il=1.0;
 	float rMin=10.0;
 	float rMax=50.0;
 	float theta=dot(l,normalize(-focDir));
 	float epsilon= rMin-rMax;
 	float inte= clamp((theta-rMax)/epsilon,0,1);
-	vec4 f=(Ambient()+Diffuse()+Specular())*fatt*inte;
+	vec4 f;
 	Ka=0.3;
-	if(ambient)
+	if(theta>cos(rMax))
 	{
-		color=dir;
+		f=(Ambient()+Diffuse()+Specular())*fatt*inte;
 	}
-	else if(pointLight)
-	{
-		color=p;
+	else
+	{		
+		f=Ambient();
 	}
-	else if(cone)
-	{
-		if(theta>cos(rMax))
-		{
-			color=f;
-		}
-		else
-		{		
-			color=Ambient();
-		}
-	}
+	p*=vec4(0.0,1.0,0.0,0.0);
+	color= f+dir+p;
 }
 

@@ -35,7 +35,7 @@ float Ke=0.2;
 vec3 point = vec3(0.0,100.0,0.0);
 
 //L vector
-vec3 l=normalize(point-positionPoint);
+vec3 l=normalize(normalize(-vec3(0.0,-1.0,-1.0)));
 
 //V vector
 vec3 v=normalize(cameraPosition-positionPoint);
@@ -53,7 +53,7 @@ vec4 Specular(vec2 tCoord)
 {
 	vec3 h=(l+v)/2.0;
 	vec3 r=2*dot(l,n)*n-l;
-	float esp= max(dot(r,v),0);//*n
+	float esp= max(dot(r,v),0);
 	
 	return vec4(texture(diffuseMap, tCoord))*Il*Ke*esp;
 }
@@ -64,36 +64,44 @@ void main()
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     vec2 texCoords = fs_in.TexCoords;
     if(active)
+    {
+        texCoords = ParallaxMapping(fs_in.TexCoords,  viewDir);
+    }
+    /*float d=length(l);
+	float fatt = 1.0/(1.0+0.7*d+1.8*(d*d));
+    if(active)
 	{
         texCoords = ParallaxMapping(fs_in.TexCoords,  viewDir);
 	}
-	FragColor=Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords);
-    /*	
-	//Ambient Specular, Difuse and Shinness
-	float a=0.5;
-	float s=0.1;
-	float d=0.1;
-	float q=1.0;
-	
-	//Intensiti of the light
-	float omega=0.005;
-	
-	//Point of Light
-	vec3 point = vec3(0.0,100.0,0.0);
-	
-	//L vector
-	vec3 l=normalize(point-positionPoint);
-	
-	//Distance surface to point
-	float distance= length(point-positionPoint);
-	
-	//R vector
-	vec3 r= (2*dot(l,n)*n)-l;
-	
-	//V vector
-	vec3 v=cameraFront-fs_in.FragPos;
-	
-	float light= a+((d*dot(n,l))+(s*pow(dot(v,r),q)))*(omega/4*3.1415*(distance*distance));
-
-	FragColor = vec4(texture(diffuseMap, texCoords));//* light;*/
+	//FragColor=(Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords));//*fatt;
+    FragColor=texture(diffuseMap,texCoords);*/
+    vec4 dir=Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords);
+        
+    //PointLight
+    Il=1.0;
+    l=normalize(point-positionPoint);
+    float d=length(l);
+    float fatt = 1.0/(1.0+0.7*d+1.8*(d*d));
+    vec4 p=(Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords))*fatt;
+    
+    //Focus
+    vec3 focDir=vec3(0.0,-1.0,0.0);
+    l=normalize(point-positionPoint);
+    float rMin=10.0;
+    float rMax=50.0;
+    float theta=dot(l,normalize(-focDir));
+    float epsilon= rMin-rMax;
+    float inte= clamp((theta-rMax)/epsilon,0,1);
+    vec4 f;
+    Ka=0.3;
+    if(theta>cos(rMax))
+    {
+        f=(Ambient(texCoords)+Diffuse(texCoords)+Specular(texCoords))*fatt*inte;
+    }
+    else
+    {       
+        f=Ambient(texCoords);
+    }
+    p*=vec4(0.0,1.0,0.0,0.0);
+    FragColor= f+dir+p;
 }
